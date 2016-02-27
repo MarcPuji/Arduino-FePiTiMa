@@ -68,3 +68,7 @@ void loop(){
     digitalWrite(4,LOW);
     digitalWrite(3,LOW);
     digitalWrite(2,LOW);
+  }
+  delay(100)
+}
+  
