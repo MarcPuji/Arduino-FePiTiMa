@@ -19,34 +19,6 @@ void setup() {
 }
 
 void loop() {
-/*  redSensorValue = analogRead(redSensorPin);
-  delay(5);
-  greenSensorValue = analogRead(greenSensorPin);
-  delay(5);
-  blueSensorValue = analogRead(blueSensorPin);
-
-  Serial.print("Raw Sensor Values \t Red: ");
-  Serial.print(redSensorValue);
-  Serial.print("\t Green: ");
-  Serial.print(greenSensorValue);
-  Serial.print("\t Blue: ");
-  Serial.print(blueSensorValue);
-
-  redValue = redSensorValue/4;
-  greenValue = greenSensorValue/4;
-  blueValue = blueSensorValue/4;
-
-  Serial.print("Mapped Sensor Values \t Red: ");
-  Serial.print(redValue);
-  Serial.print("\t Green: ");
-  Serial.print(greenValue);
-  Serial.print("\t Blue: ");
-  Serial.println(blueValue);
-
-  analogWrite(redLEDPin, redValue);
-  analogWrite(greenLEDPin, greenValue);
-  analogWrite(blueLEDPin, blueValue);
- */
  analogValue = analogRead(battery);
  voltage=divition*analogValue;
   if (voltage<1.6 && voltage>1.0)
@@ -61,7 +33,7 @@ void loop() {
   digitalWrite(blueLEDPin,HIGH);
   digitalWrite(redLEDPin,LOW);
  }
-  else if(voltage<=0.5 && voltage>=0.2)
+  else if(voltage<=0.5 && voltage>=0.1)
  {
   digitalWrite(greenLEDPin,LOW);
   digitalWrite(blueLEDPin,LOW);
