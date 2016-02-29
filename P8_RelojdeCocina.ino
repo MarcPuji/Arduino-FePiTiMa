@@ -18,7 +18,7 @@ void loop() {
     tprev = tactual;
     digitalWrite(led,HIGH);
     led++;
-    if(led == 5){
+    if(led == 6){
       tone(6,254,100);
       while(esint == esintprev){
         for(int x = 2;x<6;x++){
