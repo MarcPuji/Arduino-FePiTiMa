@@ -2,7 +2,7 @@ unsigned long tprev = 0;
 int esint = 0;
 int esintprev = 0;
 int led = 2;
-long tint = 25000;
+long tint = 10000;
 
 void setup() {
   for(int x = 2;x < 7;x++){
@@ -20,7 +20,6 @@ void loop() {
     led++;
     if(led == 6){
       tone(6,254,100);
-      delay(250)
     }
   }
   esint = digitalRead(8);
@@ -31,5 +30,19 @@ void loop() {
     led = 2;
     tprev = tactual;
     esintprev = esint;
+  }
+  while(led==6){
+    for(int x = 2,x < 6,x++){
+      digitalWrite(x,LOW);
+    }
+    for(int x = 2,x < 6,x++){
+      digitalWrite(x,HIGH);
+    }
+    esint = digitalRead(8);
+    if(esint != esintprev){
+      led = 2;
+      tprev = tactual;
+      esintprev = esint;
+    }
   }
 }
