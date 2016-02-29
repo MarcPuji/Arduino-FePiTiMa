@@ -35,6 +35,7 @@ void loop() {
     for(int x = 2,x < 6,x++){
       digitalWrite(x,LOW);
     }
+    delay(500)
     for(int x = 2,x < 6,x++){
       digitalWrite(x,HIGH);
     }
