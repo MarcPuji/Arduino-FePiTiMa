@@ -20,6 +20,7 @@ void loop() {
     led++;
     if(led == 6){
       tone(6,254,100);
+      delay(250)
     }
   }
   esint = digitalRead(8);
