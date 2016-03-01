@@ -44,6 +44,9 @@ void loop() {
 
     esint = digitalRead(8);
     if(esint != esintprev){
+      for(int x = 2;x < 6;x++){
+      digitalWrite(x,LOW);
+    }
       led = 2;
       tprev = tactual;
       esintprev = esint;
