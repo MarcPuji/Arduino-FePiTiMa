@@ -2,7 +2,7 @@ unsigned long tprev = 0;
 int esint = 0;
 int esintprev = 0;
 int led = 2;
-long tint = 1000;
+long tint = 10000;
 
 void setup() {
   for(int x = 2;x < 7;x++){
