@@ -14,7 +14,7 @@ int Motor = 0;
 int Velocitat = 0;
 int Direccio = 1;
 
-void setup()}{
+void setup(){
   pinMode(PinControl1,OUTPUT);
   pinMode(PinControl2,OUTPUT);
   pinMode(PinActivacio,OUTPUT);
@@ -31,28 +31,28 @@ void loop(){
   Velocitat = analogRead(PinPoten)/4;
   if(EstatPA != EstatPPA){
     if(EstatPA == HIGH){
-      Motor = !Motor
+      Motor = !Motor;
     }
   }
   if(EstatPD != EstatPPD){
     if(EstatPD == HIGH){
-      Direccio = !Direccio
+      Direccio = !Direccio;
     }
   }
   if(Direccio ==1){
-    digitalWrite(PinControl1,HIGH)
-    digitalWrite(PinControl2,LOW)
+    digitalWrite(PinControl1,HIGH);
+    digitalWrite(PinControl2,LOW);
   }
   else{
-    digitalWrite(PinControl1,LOW)
-    digitalWrite(PinControl2,HIGH)
+    digitalWrite(PinControl1,LOW);
+    digitalWrite(PinControl2,HIGH);
   }
   if(Motor ==1){
-    analogWrite(PinActivacio,Velocitat)
+    analogWrite(PinActivacio,Velocitat);
   }
   else{
-    analogWrite(PinActivacio,0)
+    analogWrite(PinActivacio,0);
   }
-  EstatPPD = EstatPD
-  EstatPPA = EstatPA
+  EstatPPD = EstatPD;
+  EstatPPA = EstatPA;
 }
