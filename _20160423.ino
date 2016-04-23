@@ -1,3 +1,6 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);
+
 const int led1 = 2;
 const int led2 = 3;
 const int led3 = 4;
@@ -16,6 +19,12 @@ int intera = 0;
 int interr = 0;
 
 void pastilla1(bool intera){
+  lcd.clear();
+  delay(10);
+  lcd.setCursor(0,0);
+  lcd.print("Toma la pastilla!");
+  lcd.setCursor(0,1);
+  lcd.print("Esdeveniment 1");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
   while(intera == interr){
@@ -24,10 +33,20 @@ void pastilla1(bool intera){
     delay(500);
     tone(piezo,2000,100);
   }
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("23/04/2016");
+  lcd.setCursor(0,1);
+  lcd.print("18:02:00");
   digitalWrite(led1,LOW);
   intera = interr;
 }
 void pastilla2(int intera){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Toma la pastilla!");
+  lcd.setCursor(0,1);
+  lcd.print("Esdeveniment 1");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
   while(intera == interr){
@@ -36,6 +55,11 @@ void pastilla2(int intera){
     delay(500);
     tone(piezo,2000,100);
   }
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("23/04/2016");
+  lcd.setCursor(0,1);
+  lcd.print("18:02:00");
   digitalWrite(led2,LOW);
   intera = interr;
 }
@@ -57,6 +81,10 @@ void visita30(){
 }
 
 void setup(){
+  lcd.begin(16,2);
+  lcd.print("23/04/2016");
+  lcd.setCursor(0,1);
+  lcd.print("17:58:00");
   Serial.begin(9600);
   for(int x=1;x<4;x++){
     pinMode(x,OUTPUT);
@@ -75,6 +103,7 @@ void loop() {
   Serial.print("    ");
   Serial.print(tesd[i]);
   Serial.print('\n');
+  
   
   intera = digitalRead(inter);
   tactual = millis();
