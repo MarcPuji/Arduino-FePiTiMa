@@ -9,7 +9,7 @@ char data[11];
 void setup()
 {
   // segons, minuts, hores, dia de la setmana, dia, mes, any
-  myRTC.setDS1302Time(00, 39, 16, 5, 29, 4,   2016);
+  myRTC.setDS1302Time(00, 06, 12, 5, 6, 5,   2016);
   Wire.begin(1); // Abrimos el canal 1 (0x01) del I2C
   Wire.onRequest(temps);// Creamos el evento que se relaizará cuando el Receptor llame a el emisor (Este Arduino)
   Serial.begin(9600);
@@ -48,6 +48,4 @@ void temps()
  Wire.write(hora);
   //cuando se realize la peticion ese mensaje y lo enviaremos por el canal 1
 }
-
-
 

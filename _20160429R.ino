@@ -1,11 +1,14 @@
+#include <Servo.h>
 #include <LiquidCrystal.h>
 #include <Wire.h>
+Servo MiServo;
 LiquidCrystal lcd(13,12,11,10,9,8);
 
 char temps; //INICIAMOS UNA CADENA
-const int led1 = 2;
+const int servo1 = 2;
 const int led2 = 3;
 const int led3 = 4;
+int angle=45;
 
 const int inter = 7;
 const int piezo = 6;
@@ -28,16 +31,21 @@ void pastilla1(int intera){
   lcd.print("Toma la pastilla!");
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 1");
+  MiServo.write(0);
+  delay(1000);
+  MiServo.write(angle);
+  delay(200);
+  MiServo.write(0);
+  delay(200);
   interr = digitalRead(inter);
-  Serial.print(interr==intera);
+  
   while(intera == interr){
     interr = digitalRead(inter);
-    digitalWrite(led1,HIGH);
     delay(500);
     tone(piezo,2000,100);
   }
   lcd.clear();
-  digitalWrite(led1,LOW);
+ // digitalWrite(led1,LOW);
 }
 void pastilla2(int intera){
   lcd.clear();
@@ -80,12 +88,12 @@ void visita60(){
   lcd.setCursor(0,1);
   lcd.print("anar al metge");
   for(int y=0;y<5;y++){
-    digitalWrite(led1,HIGH);
+//    digitalWrite(led1,HIGH);
     digitalWrite(led2,HIGH);
     digitalWrite(led3,HIGH);
     tone(piezo,2000,100);
     delay(750);
-    digitalWrite(led1,LOW);
+//    digitalWrite(led1,LOW);
     digitalWrite(led2,LOW);
     digitalWrite(led3,LOW);
     delay(750);
@@ -100,12 +108,12 @@ void visita30(){
   lcd.setCursor(0,1);
   lcd.print("anar al metge");
   for(int x=0;x<5;x++){
-    digitalWrite(led1,HIGH);
+//    digitalWrite(led1,HIGH);
     digitalWrite(led2,HIGH);
     digitalWrite(led3,HIGH);
     tone(piezo,2000,100);
     delay(750);
-    digitalWrite(led1,LOW);
+//    digitalWrite(led1,LOW);
     digitalWrite(led2,LOW);
     digitalWrite(led3,LOW);
     delay(750);
@@ -114,6 +122,7 @@ void visita30(){
 }
 
 void setup(){
+  MiServo.attach(servo1);
   Wire.begin();
   lcd.begin(16,2);
   lcd.print("06/05/2016");
@@ -129,6 +138,7 @@ void setup(){
 }
 
 void loop() {
+  MiServo.write(0);
   Wire.requestFrom(1,8);
   while(Wire.available())
   {
@@ -142,17 +152,6 @@ void loop() {
   delay(500);
   lcd.clear();
   text="";
- /* Serial.print("    ");
-  Serial.print(text);
-  Serial.print("    ");
-  Serial.print(millis());
-  Serial.print("    ");
-  Serial.print(intera);
-  Serial.print("    ");
-  Serial.print(tesd[i]);
-  Serial.print('\n');
-//  Serial.print(segons);
-*/
   tactual = millis();
   if(i < sizeof(esd)){
     tesdeveniment = tesd[i];
