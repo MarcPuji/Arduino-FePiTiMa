@@ -12,6 +12,9 @@ const int inter = 7;
 const int piezo = 6;
 String text="";
 
+int dif = 0;
+int crono = 0;
+
 int i = 0;
 int esd[] = {1,2,30};
 int tesd[] = {5000,20000,30000}; 
@@ -30,11 +33,14 @@ void pastilla1(int intera){
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 1");
   interr = digitalRead(inter);
-  while(intera == interr){
+  dif = 0;
+  crono = millis();
+  while(intera == interr or dif < 10000){
     interr = digitalRead(inter);
     digitalWrite(led1,HIGH);
     delay(500);
     tone(piezo,2000,100);
+    dif = millis() - crono;
   }
   lcd.clear();
   digitalWrite(led1,LOW);
@@ -47,11 +53,14 @@ void pastilla2(int intera){
   lcd.print("Esdeveniment 2");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
-  while(intera == interr){
+  dif = 0;
+  crono = millis();
+  while(intera == interr or dif < 10000){
     interr = digitalRead(inter);
     digitalWrite(led2,HIGH);
     delay(500);
     tone(piezo,2000,100);
+    dif = millis() - crono;
   }
   lcd.clear();
   digitalWrite(led2,LOW);
@@ -64,11 +73,14 @@ void pastilla3(int intera){
   lcd.print("Esdeveniment 3");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
-  while(intera == interr){
+  dif = 0;
+  crono = millis();
+  while(intera == interr or dif < 10000){
     interr = digitalRead(inter);
     digitalWrite(led3,HIGH);
     delay(500);
     tone(piezo,2000,100);
+    dif = millis() - crono;
   }
   lcd.clear();
   digitalWrite(led3,LOW);
@@ -81,11 +93,14 @@ void pastilla4(int intera){
   lcd.print("Esdeveniment 4");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
-  while(intera == interr){
+  dif = 0;
+  crono = millis();
+  while(intera == interr or dif < 10000){
     interr = digitalRead(inter);
     digitalWrite(led4,HIGH);
     delay(500);
     tone(piezo,2000,100);
+    dif = millis() - crono;
   }
   lcd.clear();
   digitalWrite(led3,LOW);
