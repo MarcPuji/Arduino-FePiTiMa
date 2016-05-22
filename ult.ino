@@ -38,11 +38,11 @@ void pastilla1(int intera){
   lcd.print("Toma la pastilla!");
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 1");
- // interr = digitalRead(inter);
+  interr = digitalRead(inter);
   dif = 0;
   i=0;
   crono = millis();
-  while(true){
+  while(intera == interr){
     interr = digitalRead(inter);
     digitalWrite(led1,HIGH);
     delay(500);
@@ -61,11 +61,6 @@ void pastilla1(int intera){
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
-    if (intera != interr)
-    {
-      i = 0;
-      break;
-    }
   }
   lcd.clear();
   digitalWrite(led1,LOW);
@@ -76,7 +71,7 @@ void pastilla2(int intera){
   lcd.print("Toma la pastilla!");
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 2");
-//  interr = digitalRead(inter);
+  interr = digitalRead(inter);
   dif = 0;
   i=0;
   crono = millis();
@@ -114,7 +109,7 @@ void pastilla3(int intera){
   i=0;
   dif = 0;
   crono = millis();
-  while(true){
+  while(intera == interr){
     interr = digitalRead(inter);
     digitalWrite(led3,HIGH);
     delay(500);
@@ -132,11 +127,6 @@ void pastilla3(int intera){
       lcd.print("enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
-    }
-    if (intera != interr)
-    {
-      i = 0;
-      break;
     }
   }
   lcd.clear();
