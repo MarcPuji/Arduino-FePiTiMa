@@ -18,11 +18,11 @@ int crono = 0;
 
 int i = 0;
 //Any, mes, dia, hora, minuts,segons,hores de repeticio, quantita, capsula/visita si es 1 abre la capsula 1 si es 2 capsula 2.... 
-int horaesd[5][9] = {{2016, 5, 21, 17, 15, 0, 8, 20, 1},
-  {2016, 1, 2, 10, 13, 4, 10, 2},
-  {2016, 1, 2, 10, 13, 1, 1, 3},
-  {2016, 1, 2, 10, 14, 1, 0, 4},
-  {2016, 1, 2, 10, 13, 1, 1, 30}
+int horaesd[5][9] = {{2016, 5, 21, 17, 15, 0, 8, 20, 3},
+  {2016, 5, 21, 17, 15, 15, 8, 10, 1},
+  {2016, 1, 2, 10, 13, 1, 1, 3, 3},
+  {2016, 1, 2, 10, 14, 1, 0, 4, 7},
+  {2016, 1, 2, 10, 13, 1, 1, 7, 30}
   }; 
 
 int tactual = 0;
@@ -38,10 +38,11 @@ void pastilla1(int intera){
   lcd.print("Toma la pastilla!");
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 1");
-  interr = digitalRead(inter);
+ // interr = digitalRead(inter);
   dif = 0;
+  i=0;
   crono = millis();
-  while(intera == interr){
+  while(true){
     interr = digitalRead(inter);
     digitalWrite(led1,HIGH);
     delay(500);
@@ -60,6 +61,11 @@ void pastilla1(int intera){
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
+    if (intera != interr)
+    {
+      i = 0;
+      break;
+    }
   }
   lcd.clear();
   digitalWrite(led1,LOW);
@@ -70,9 +76,9 @@ void pastilla2(int intera){
   lcd.print("Toma la pastilla!");
   lcd.setCursor(0,1);
   lcd.print("Esdeveniment 2");
-  interr = digitalRead(inter);
-  Serial.print(interr==intera);
+//  interr = digitalRead(inter);
   dif = 0;
+  i=0;
   crono = millis();
   while(intera == interr){
     interr = digitalRead(inter);
@@ -105,9 +111,10 @@ void pastilla3(int intera){
   lcd.print("Esdeveniment 3");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
+  i=0;
   dif = 0;
   crono = millis();
-  while(intera == interr){
+  while(true){
     interr = digitalRead(inter);
     digitalWrite(led3,HIGH);
     delay(500);
@@ -125,6 +132,11 @@ void pastilla3(int intera){
       lcd.print("enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
+    }
+    if (intera != interr)
+    {
+      i = 0;
+      break;
     }
   }
   lcd.clear();
@@ -231,23 +243,25 @@ void loop() {
    lcd.print(hora);
    lcd.setCursor(0, 1);
    lcd.print(data);
-   delay(1000);
+   delay(200);
    lcd.clear();
    tactual = millis();
-   int i=0;
-   if(i < sizeof(horaesd)){
+   while(i < 5){
     if(horaesd[i][0]==myRTC.year && horaesd[i][1]==myRTC.month && horaesd[i][2]==myRTC.dayofmonth && horaesd[i][3]==myRTC.hours && horaesd[i][4]==myRTC.minutes && horaesd[i][5]==myRTC.seconds){
-       if(horaesd[i][8] == 1){
+      if(horaesd[i][8] == 1){
         intera = digitalRead(inter);
         pastilla1(intera);
+//        i=0;
       }
       else if(horaesd[i][8] == 2){
         intera = digitalRead(inter);
         pastilla2(intera);
+//        i=0;
       }
       else if(horaesd[i][8] == 3){
         intera = digitalRead(inter);
         pastilla3(intera);
+//        i=0;
       }
       else if(horaesd[i][8] == 4){
         intera = digitalRead(inter);
@@ -259,8 +273,9 @@ void loop() {
       else if(esdeveniment == 30){
         visita30();
       }
-     i++;
     }
-  }
+         i++;
+   }
+    i=0;
 }
 
