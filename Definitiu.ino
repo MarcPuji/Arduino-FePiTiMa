@@ -3,59 +3,59 @@
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(10);
 virtuabotixRTC myRTC(8, 9, 12); //Conectem els pins CLK -> 8, DAT -> 9, RST -> 12
-int emerg=0;
+
+//es defineixen els pins corresponents a cada component
 const int led1 = A0;
 const int led2 = A1;
 const int led3 = A2;
 const int led4 = A3;
 const int inter = 6;
 const int piezo = A4;
+const int emerg=0; //Emisor de radiofreqüència
+
 char hora[9];
 char data[11];
 
+//es defineixen uns contadors per tal de controlar el temps d'emergència
 int dif = 0;
 int crono = 0;
 
+//s'inicialitza el contador d'esdeveniments
 int i = 0;
-//Any, mes, dia, hora, minuts,segons,hores de repeticio, quantita, capsula/visita si es 1 abre la capsula 1 si es 2 capsula 2.... 
-int horaesd[5][9] = {{2016, 5, 21, 17, 15, 0, 8, 20, 3},
-  {2016, 5, 21, 17, 15, 5, 8, 10, 2},
-  {2016, 5, 21, 17, 15, 10, 1, 0, 1},
-  {2016, 5, 21, 17, 15, 20, 0, 4, 4},
-  {2016, 5, 21, 18, 15, 30, 0, 0, 0}
+
+//llista d'esdeveniments
+//Any, mes, dia, hora, minuts,segons,hores de repetició, quantitat, pastilla/visita (1,2,3,4) per pastilles i 0 si visita, dosi
+int horaesd[5][10] = {{2016, 5, 21, 17, 15, 0, 8, 20, 3,1},
+  {2016, 5, 21, 17, 15, 7, 8, 10, 2,2},
+  {2016, 5, 21, 17, 15, 15, 1, 0, 1,1},
+  {2016, 5, 21, 17, 15, 24, 2, 4, 4,1},
+  {2016, 5, 21, 18, 15, 36, 0, 0, 0,0}
   }; 
 
-int tactual = 0;
-int tesdeveniment = 0;
-int esdeveniment = 0;
+//es defineixen unes variables per controlar el canvi del interruptor
 int intera = 0;
 int interr = 0;
 
 void pastilla1(int intera){
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Toma la pastilla!");
-  lcd.setCursor(0,1);
-  lcd.print("Esdeveniment 1");
-  interr = digitalRead(inter);
+  interr = digitalRead(inter); //es llegeixen els valors del interruptor abans i després de començar l'avís per saber si ja s'ha pres la pastilla
   Serial.print(interr==intera);
   dif = 0;
-  crono = millis();
+  crono = millis(); //es comença a contar quant es tarda a prendre la pastilla per saber si s'ha d'avisar als familiars
   while(intera == interr){
     interr = digitalRead(inter);
     digitalWrite(led1,HIGH);
     delay(500);
-    tone(piezo,2000,100);
+    tone(piezo,2000,100); //avisos lluminosos i acustics per al usuari
     dif = millis() - crono;
-    if (dif>=10000)
+    if (dif>=10000) //si es passa cert temps sense pendre's la pastilla, s'entra en emergència
     {
       digitalWrite(emerg,HIGH);
       delay(100);
       digitalWrite(emerg,LOW);
-      delay(100);
+      delay(100); //s'envia el senyal
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("enviant senyal");
+      lcd.print("Enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
@@ -64,11 +64,6 @@ void pastilla1(int intera){
   digitalWrite(led1,LOW);
 }
 void pastilla2(int intera){
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Toma la pastilla!");
-  lcd.setCursor(0,1);
-  lcd.print("Esdeveniment 2");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
   dif = 0;
@@ -87,7 +82,7 @@ void pastilla2(int intera){
       delay(100);
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("enviant senyal");
+      lcd.print("Enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
@@ -96,11 +91,6 @@ void pastilla2(int intera){
   digitalWrite(led2,LOW);
 }
 void pastilla3(int intera){
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Toma la pastilla!");
-  lcd.setCursor(0,1);
-  lcd.print("Esdeveniment 3");
   interr = digitalRead(inter);
   dif = 0;
   crono = millis();
@@ -118,7 +108,7 @@ void pastilla3(int intera){
       delay(100);
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("enviant senyal");
+      lcd.print("Enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
@@ -127,11 +117,6 @@ void pastilla3(int intera){
   digitalWrite(led3,LOW);
 }
 void pastilla4(int intera){
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Toma la pastilla!");
-  lcd.setCursor(0,1);
-  lcd.print("Esdeveniment 4");
   interr = digitalRead(inter);
   Serial.print(interr==intera);
   dif = 0;
@@ -150,7 +135,7 @@ void pastilla4(int intera){
       delay(100);
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("enviant senyal");
+      lcd.print("Enviant senyal");
       lcd.setCursor(0,1);
       lcd.print("d'emergencia");
     }
@@ -183,6 +168,7 @@ void visita60(){
 
 void setup() 
 {
+  // es defineix data i hora quan s'engega el dispositiu
   // segons, minuts, hores, dia de la setmana, dia, mes, any
   myRTC.setDS1302Time(50, 14, 17, 4, 21, 5, 2016);
   lcd.begin(16, 2);
@@ -192,7 +178,7 @@ void setup()
   pinMode(led3,OUTPUT);
   pinMode(led4,OUTPUT);
   
-//  digitalWrite(,LOW);
+
   Serial.begin(9600);
 }
      
@@ -204,28 +190,39 @@ void loop() {
    lcd.setCursor(0, 0);
    lcd.print(hora);
    lcd.setCursor(0, 1);
-   lcd.print(data);
+   lcd.print(data); //es va actualitzant l'hora en pantalla a cada loop
    delay(200);
    lcd.clear();
-//   tactual = millis();
-   while(i < 5){
+   while(i < 5){ //es recorren tots els esdeveniments
     if(horaesd[i][0]==myRTC.year && horaesd[i][1]==myRTC.month && horaesd[i][2]==myRTC.dayofmonth && (horaesd[i][3]==myRTC.hours || ((horaesd[i][3]-1)==myRTC.hours && horaesd[i][8]==0))  && horaesd[i][4]==myRTC.minutes && horaesd[i][5]==myRTC.seconds)
-    {
-      if(horaesd[i][8] == 1 && horaesd[i][7]>0){
-        horaesd[i][7]=horaesd[i][7]-1;
+    { //si algun dels esdeveniments té la data i l'hora actual s'avalua
+      if(horaesd[i][8] == 1 && horaesd[i][7]>0){ //es busca de quin esdeveniment es tracta
+        horaesd[i][7]=horaesd[i][7]-1; //si es una pastilla i encara s'ha de pendre, s'elimina una de les pastilles pendents a pendre
         if (horaesd[i][3]+horaesd[i][6]<24)
         {
-          horaesd[i][3]=+horaesd[i][6];
+          horaesd[i][3]=+horaesd[i][6]; //si la freqüència de presa de pastilla + l'hora en la que ens trobem no passa de 24 hores, es sumen les hores directament
         }
         else
         {
-          horaesd[i][2]=horaesd[i][2]+int((horaesd[i][3]+horaesd[i][6])/24);
-          horaesd[i][3]=horaesd[i][3]+horaesd[i][6]-24*int((horaesd[i][3]+horaesd[i][6])/24);
+          horaesd[i][2]=horaesd[i][2]+int((horaesd[i][3]+horaesd[i][6])/24); //altrament cal partir el temps que cal sumar en dies i hores
+          horaesd[i][3]=horaesd[i][3]+horaesd[i][6]-24*int((horaesd[i][3]+horaesd[i][6])/24); //amb aquest procediment s'actualitza la llista d'esdeveiments
+        }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Pren la pastilla!");
+        if (horaesd[i][9] == 1){ //s'avalua quina es la dosi a pendre
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Sencera");
+        }
+        else{
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Mitja");
         }
         intera = digitalRead(inter);
-        pastilla1(intera);
-//        break;
+        pastilla1(intera); //es crida la funció pastilla que pertoca
+        delay(250);
       }
+      
       else if(horaesd[i][8] == 2 && horaesd[i][7]>0){
         horaesd[i][7]=horaesd[i][7]-1;
         if (horaesd[i][3]+horaesd[i][6]<24)
@@ -238,8 +235,20 @@ void loop() {
           horaesd[i][3]=horaesd[i][3]+horaesd[i][6]-24*int((horaesd[i][3]+horaesd[i][6])/24);
 
         }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Pren la pastilla!");
+        if (horaesd[i][9] == 1){
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Sencera");
+        }
+        else{
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Mitja");
+        }
         intera = digitalRead(inter);
         pastilla2(intera);
+        delay(250);
 
       }
       else if(horaesd[i][8] == 3 && horaesd[i][7]>0){
@@ -253,8 +262,20 @@ void loop() {
           horaesd[i][2]=horaesd[i][2]+int((horaesd[i][3]+horaesd[i][6])/24);
           horaesd[i][3]=horaesd[i][3]+horaesd[i][6]-24*int((horaesd[i][3]+horaesd[i][6])/24);
         }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Pren la pastilla!");
+        if (horaesd[i][9] == 1){
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Sencera");
+        }
+        else{
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Mitja");
+        }
         intera = digitalRead(inter);
         pastilla3(intera);
+        delay(250);
       }
       else if(horaesd[i][8] == 4 && horaesd[i][7]>0){
         horaesd[i][7]=horaesd[i][7]-1;
@@ -267,15 +288,27 @@ void loop() {
           horaesd[i][2]=horaesd[i][2]+int((horaesd[i][3]+horaesd[i][6])/24);
           horaesd[i][3]=horaesd[i][3]+horaesd[i][6]-24*int((horaesd[i][3]+horaesd[i][6])/24);
         }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Pren la pastilla!");
+        if (horaesd[i][9] == 1){
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Sencera");
+        }
+        else{
+          lcd.setCursor(0,1);
+          lcd.print("Dosi: Mitja");
+        }
         intera = digitalRead(inter);
         pastilla4(intera);
       }
-      else if(horaesd[i][8] == 0){
+     else if(horaesd[i][8] == 0){
       visita60();
+      delay(250);
       }
     }
-         i++;
+    i++; //es va augmentant l'index de la llista per tal de mirar tots els esdeveniments ja que no tenen perque estar en ordre
    }
-    i=0;
+  i=0; //es torna a entrar al loop que mira els esdeveniments
 }
 
